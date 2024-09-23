@@ -57,4 +57,36 @@
 
         function displayMaze(maze) {
             const mazeDiv = document.getElementById("maze");
-            mazeDiv.innerHTML =
+            mazeDiv.innerHTML = "";
+            maze.forEach(row => {
+                const rowDiv = document.createElement("div");
+                rowDiv.classList.add("row");
+                row.forEach(cell => {
+                    const cellDiv = document.createElement("div");
+                    cellDiv.classList.add("cell");
+                    cellDiv.innerHTML = cell;
+                    rowDiv.appendChild(cellDiv);
+                });
+                mazeDiv.appendChild(rowDiv);
+            });
+        }
+
+        function solveMaze(algorithm) {
+            fetch(`/solve_maze?algorithm=${algorithm}`)
+            .then(response => response.json())
+            .then(data => {
+                displayMaze(data.maze);
+                highlightPath(data.path);
+            });
+        }
+
+        function highlightPath(path) {
+            path.forEach(([i, j]) => {
+                const row = document.getElementById("maze").children[i];
+                const cell = row.children[j];
+                cell.style.backgroundColor = "yellow";
+            });
+        }
+    </script>
+</body>
+</html>
